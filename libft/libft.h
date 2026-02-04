@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpinheir <rpinheir@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rpinheir <rpinhier@student.42Lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/01 16:01:20 by rpinheir          #+#    #+#             */
-/*   Updated: 2025/12/05 15:23:23 by rpinheir         ###   ########.fr       */
+/*   Created: 2026/02/04 15:55:31 by rpinheir          #+#    #+#             */
+/*   Updated: 2026/02/04 15:55:31 by rpinheir         ###   ########.ch       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
@@ -59,6 +59,7 @@ int			ft_toupper(int c);
 int			ft_tolower(int c);
 int			ft_strncmp(const char *s1, const char *s2, int n);
 int			ft_memcmp(const void *s1, const void *s2, int n);
+int			ft_strfree(char **str);
 
 long long	ft_atoll(const char *nptr);
 

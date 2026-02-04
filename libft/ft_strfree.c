@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strfree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpinheir <rpinhier@student.42Lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:46:52 by rpinheir          #+#    #+#             */
-/*   Updated: 2026/02/04 14:49:15 by rpinheir         ###   ########.ch       */
+/*   Created: 2026/02/04 12:49:26 by rpinheir          #+#    #+#             */
+/*   Updated: 2026/02/04 12:51:55 by rpinheir         ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include "../libft/libft.h"
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
+int	ft_strfree(char **str)
+{
+	int	i;
 
-void	exec(char *cmd, char **envp);
-
-#endif
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+	return (0);
+}
