@@ -14,10 +14,11 @@
 # define PIPEX_H
 
 # include "../libft/libft.h"
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
-void	exec(char *cmd, char **envp);
+void	exec_cmd(char *cmd, char **envp);
 
 #endif

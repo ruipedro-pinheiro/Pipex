@@ -30,7 +30,7 @@ int	child_1(char **argv, int *pipe_fd, char **envp)
 	close(fd);
 	dup2(pipe_fd[1], 1);
 	close(pipe_fd[1]);
-	exec(argv[2], envp);
+	exec_cmd(argv[2], envp);
 	return (0);
 }
 
@@ -49,7 +49,7 @@ int	child_2(char **argv, int *pipe_fd, char **envp)
 	close(fd);
 	dup2(pipe_fd[0], 0);
 	close(pipe_fd[0]);
-	exec(argv[3], envp);
+	exec_cmd(argv[3], envp);
 	return (0);
 }
 
@@ -58,24 +58,25 @@ int	main(int argc, char **argv, char **envp)
 	int		pipe_fd[2];
 	pid_t	pid1;
 	pid_t	pid2;
-	int		i;
 	int		status;
 
-	i = 0;
 	if (argc != 5)
-		ft_printf("Please give at least 4 args ");
+		return (ft_printf("Please give at least 4 args "), 1);
 	if (pipe(pipe_fd) == -1)
-		exit(-1);
+		exit(1);
 	pid1 = fork();
 	if (pid1 == -1)
-		exit(-1);
+		exit(1);
 	if (!pid1)
 		child_1(argv, pipe_fd, envp);
 	pid2 = fork();
 	if (pid2 == -1)
-		exit(-1);
-	if (pid2)
+		exit(1);
+	if (!pid2)
 		child_2(argv, pipe_fd, envp);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 	waitpid(pid1, &status, 0);
-	return (0);
+	waitpid(pid2, &status, 0);
+	return (WEXITSTATUS(status));
 }

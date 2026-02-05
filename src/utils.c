@@ -11,26 +11,22 @@
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
-#include <stdio.h>
-#include <unistd.h>
 
 char	*get_envp(char **envp)
 {
 	int		i;
 	int		j;
-	char	*name;
 	char	*path;
 
-	name = "PATH";
 	i = 0;
 	j = 0;
-	while (envp[i][j])
+	while (envp[i])
 	{
 		j = 0;
 		while (envp[i][j] && envp[i][j] != '=')
 			j++;
 		path = ft_substr(envp[i], 0, j + 1);
-		if (ft_strncmp(path, name, ft_strlen(name)) == 0)
+		if (ft_strncmp(path, "PATH=", 5) == 0)
 		{
 			free(path);
 			return (envp[i] + j + 1);
@@ -38,7 +34,7 @@ char	*get_envp(char **envp)
 		free(path);
 		i++;
 	}
-	return (NULL);
+	return ("");
 }
 
 char	*get_path(char *cmd, char **envp)
@@ -50,12 +46,14 @@ char	*get_path(char *cmd, char **envp)
 
 	i = 0;
 	paths = ft_split(get_envp(envp), ':');
+	if (!paths)
+		exit(0);
 	while (paths[i])
 	{
 		path_part = ft_strjoin(paths[i], "/");
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
-		if (access(exec, F_OK && X_OK) == 0)
+		if (access(exec, X_OK) == 0)
 		{
 			ft_strfree(paths);
 			return (exec);
@@ -67,18 +65,25 @@ char	*get_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	exec(char *cmd, char **envp)
+void	exec_cmd(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
 
 	s_cmd = ft_split(cmd, ' ');
 	path = get_path(s_cmd[0], envp);
+	if (!path)
+	{
+		ft_putstr_fd(s_cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		ft_strfree(s_cmd);
+		exit(127);
+	}
 	if (execve(path, s_cmd, envp) == -1)
 	{
 		ft_putstr_fd(s_cmd[0], 2);
-		perror("\n Command not found");
+		ft_putstr_fd(": command not found\n", 2);
 		ft_strfree(s_cmd);
-		exit(0);
+		exit(127);
 	}
 }
