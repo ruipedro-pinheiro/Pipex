@@ -68,6 +68,7 @@ int	child_end(int argc, char **argv, int *pipe_fd2, char **envp)
 	exec_cmd(argv[argc - 2], envp);
 	return (0);
 }
+
 int	pipe_setup(int argc, char **argv, char **envp)
 {
 	int		pipe_fd[2];
@@ -110,6 +111,7 @@ int	pipe_setup(int argc, char **argv, char **envp)
 	waitpid(pid3, &status, 0);
 	return (WEXITSTATUS(status));
 }
+
 int	main(int argc, char **argv, char **envp)
 {
 	int	i;

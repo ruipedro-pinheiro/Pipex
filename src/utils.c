@@ -17,6 +17,7 @@ int	error_handler(char *msg)
 	perror(msg);
 	exit(errno);
 }
+
 char	*get_envp(char **envp)
 {
 	int		i;

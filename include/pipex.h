@@ -20,8 +20,15 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-void	exec_cmd(char *cmd, char **envp);
+// pipe_fd is the original pipe, if needed more pipes will be added
+typedef struct t_pipex
+{
+	int		*pipe_fd;
+	char	**argv;
+	char	**envp;
+}			t_pipex;
 
-int		error_handler(char *msg);
+void		exec_cmd(char *cmd, char **envp);
+int			error_handler(char *msg);
 
 #endif
