@@ -3,70 +3,86 @@ NAME = pipex
 SRCDIR = src
 OBJDIR = obj
 INCDIR = include
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-# Source Files
-SRC = pipex.c utils.c 
-OBJ = $(SRC:.c=.o)
-SRC := $(addprefix $(SRCDIR)/, $(SRC))
-OBJ := $(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(OBJ))
-
-# Libft - Please configure your own path if different
-LIBFT_DIR := libft
-LIBFT := $(LIBFT_DIR)/libft.a
-LIBFT_INCLUDE := $(LIBFT_DIR)#/include 		#Your header file in include dir ?
-# Libraries and Linker Flags
-LDFLAGS =  -L$(LIBFT_DIR)
-LIBS =  $(LIBFT)
-
-# Archiver
-AR = ar
-ARFLAGS = rcs
-
-# Compiler and Flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(INCDIR) -g3 -I$(LIBFT_INCLUDE)
+CFLAGS = -Wall -Wextra -Werror -I$(INCDIR) -I$(LIBFT_DIR)
 
-# Default Rule
-all: $(OBJDIR) $(LIBFT) $(NAME)
+SRC = pipex.c utils.c
+OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
-# Object Directory Rule
+SRCDIR_B = src_bonus
+OBJDIR_B = obj_bonus
+SRC_B = pipex.c utils.c
+OBJ_B = $(addprefix $(OBJDIR_B)/, $(SRC_B:.c=.o))
+
+################################################################################
+#                                PROGRESS BAR                                  #
+################################################################################
+
+CNT = /tmp/.pipex_cnt
+RESET := $(shell echo 0 > $(CNT))
+C = \033[1;36m
+Y = \033[1;33m
+R = \033[1;31m
+B = \033[1m
+X = \033[0m
+
+define progress
+n=$$(($$(cat $(CNT)) + 1)); echo $$n > $(CNT); \
+t=$(1); pct=$$((n * 100 / t)); f=$$((n * 20 / t)); \
+bar=""; i=0; \
+while [ $$i -lt $$f ]; do bar="$${bar}█"; i=$$((i+1)); done; \
+while [ $$i -lt 20 ]; do bar="$${bar}░"; i=$$((i+1)); done; \
+printf "\r\033[K $(C)🔧 [$(NAME)] $(Y)$$bar $(B)$$pct%%$(X)"
+endef
+
+################################################################################
+#                                   RULES                                      #
+################################################################################
+
+all: $(LIBFT) $(NAME)
+	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
+	@printf " $(C)✅ [$(NAME)] $(B)Build complete$(X)\n"
+
+bonus: $(LIBFT) .bonus
+	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
+	@printf " $(C)✅ [$(NAME)] $(B)Bonus complete$(X)\n"
+
+$(NAME): $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) $(LIBFT) -o $(NAME)
+
+.bonus: $(OBJ_B) $(LIBFT)
+	@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ_B) $(LIBFT) -o $(NAME)
+	@touch .bonus
+
+$(LIBFT):
+	@$(MAKE) --silent -C $(LIBFT_DIR)
+
 $(OBJDIR):
-	$(V)mkdir -p $(OBJDIR) || true
+	@mkdir -p $(OBJDIR)
 
-# Dependency Files
-DEP = $(OBJ:.o=.d)
+$(OBJDIR_B):
+	@mkdir -p $(OBJDIR_B)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	@mkdir -p $(dir $@)
-	$(V)$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(call progress,$(words $(SRC)))
 
--include $(DEP)
+$(OBJDIR_B)/%.o: $(SRCDIR_B)/%.c | $(OBJDIR_B)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(call progress,$(words $(SRC_B)))
 
-# Linking Rule
-$(NAME): $(OBJ) $(LIBFT)
-	$(V)$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) $(BONUS_OBJ) $(LIBS) $(MLXFLAGS) -o $(NAME)
-	$(V)echo $(GREEN)"[$(NAME)] Executable created ✅"$(RESET)
-
-# Libft
-$(LIBFT):
-	$(V)$(MAKE) --silent -C $(LIBFT_DIR)
-	$(V)echo '[$(NAME)] Libft build successfully'
-
-# Clean Rules
 clean:
-	$(V)echo $(RED)'[$(NAME)] Cleaning objects'd$(RESET)
-	$(V)rm -rf $(OBJDIR)
+	@printf " $(R)🗑️  [$(NAME)] Cleaned$(X)\n"
+	@rm -rf $(OBJDIR) $(OBJDIR_B)
+	@$(MAKE) --silent -C $(LIBFT_DIR) clean
 
 fclean: clean
-	$(V)echo $(RED)'[$(NAME)] Cleaning all files'$(RESET)
-	$(V)rm -f $(NAME)
-	$(V)$(MAKE) --silent -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME) .bonus
+	@$(MAKE) --silent -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-# Makefile Reconfiguration 
-regen:
-	makemyfile
-
-.PHONY: all clean fclean re bonus regen
-.DEFAULT_GOAL := all
+.PHONY: all clean fclean re bonus

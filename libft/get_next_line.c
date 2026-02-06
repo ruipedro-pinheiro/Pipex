@@ -30,7 +30,7 @@ void	read_to_stash(int fd, char **stash)
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (free(*stash), *stash = NULL, (void)0);
-	while (ft_strchr(*stash, '\n') == -1)
+	while (gnl_find_char(*stash, '\n') == -1)
 	{
 		bytes_readed = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_readed == -1)
@@ -59,7 +59,7 @@ void	clean_stash(char *stash)
 	int	len;
 	int	i;
 
-	len = ft_strchr(stash, '\n');
+	len = gnl_find_char(stash, '\n');
 	i = 0;
 	while (stash[len + 1 + i])
 	{
@@ -139,6 +139,6 @@ char	*get_next_line(int fd)
 	read_to_stash(fd, &stash);
 	if (!stash)
 		return (NULL);
-	len = ft_strchr(stash, '\n');
+	len = gnl_find_char(stash, '\n');
 	return (extract_line(&stash, len));
 }
