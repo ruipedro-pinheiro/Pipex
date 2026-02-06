@@ -22,7 +22,7 @@ int	child_1(char **argv, int *pipe_fd, char **envp)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		perror("infile");
+		perror(argv[1]);
 		exit(1);
 	}
 	close(pipe_fd[0]);
@@ -41,7 +41,7 @@ int	child_2(char **argv, int *pipe_fd, char **envp)
 	fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror("outfile");
+		perror(argv[4]);
 		exit(1);
 	}
 	close(pipe_fd[1]);
@@ -63,15 +63,15 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		return (ft_printf("Please give at least 4 args "), 1);
 	if (pipe(pipe_fd) == -1)
-		exit(1);
+		error_handler("pipe");
 	pid1 = fork();
 	if (pid1 == -1)
-		exit(1);
+		error_handler("Child");
 	if (!pid1)
 		child_1(argv, pipe_fd, envp);
 	pid2 = fork();
 	if (pid2 == -1)
-		exit(1);
+		error_handler("Child");
 	if (!pid2)
 		child_2(argv, pipe_fd, envp);
 	close(pipe_fd[0]);

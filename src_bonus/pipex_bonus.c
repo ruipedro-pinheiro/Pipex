@@ -65,16 +65,13 @@ int	child_end(char **argv, int *pipe_fd, char **envp)
 	exec_cmd(argv[3], envp);
 	return (0);
 }
-
-int	main(int argc, char **argv, char **envp)
+int	pipe_setup(char **argv, char **envp)
 {
 	int		pipe_fd[2];
 	pid_t	pid1;
 	pid_t	pid2;
 	int		status;
 
-	if (argc < 5)
-		return (ft_printf("Please give at least 4 args\n"), 2);
 	if (pipe(pipe_fd) == -1)
 		exit(1);
 	pid1 = fork();
@@ -92,4 +89,21 @@ int	main(int argc, char **argv, char **envp)
 	waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);
 	return (WEXITSTATUS(status));
+}
+int	main(int argc, char **argv, char **envp)
+{
+	int	i;
+
+	if (argc < 5)
+		return (ft_printf("Please give at least 4 args\n"), 2);
+	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc") == 0))
+	{
+		i = 3;
+		if (argc < 6)
+			exit(1);
+	}
+	else
+	{
+	}
+	pipe_setup(argv, envp);
 }

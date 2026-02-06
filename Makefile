@@ -46,7 +46,7 @@ all: $(LIBFT) $(NAME)
 	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
 	@printf " $(C)✅ [$(NAME)] $(B)Build complete$(X)\n"
 
-bonus: $(LIBFT) .bonus
+bonus: $(LIBFT) $(NAME)
 	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
 	@printf " $(C)✅ [$(NAME)] $(B)Bonus complete$(X)\n"
 
@@ -55,7 +55,6 @@ $(NAME): $(OBJ) $(LIBFT)
 
 .bonus: $(OBJ_B) $(LIBFT)
 	@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ_B) $(LIBFT) -o $(NAME)
-	@touch .bonus
 
 $(LIBFT):
 	@$(MAKE) --silent -C $(LIBFT_DIR)
