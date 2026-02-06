@@ -75,7 +75,7 @@ $(OBJDIR_B)/%.o: $(SRCDIR_B)/%.c | $(OBJDIR_B)
 	@$(call progress,$(words $(SRC_B)))
 
 clean:
-	@printf " $(R)🗑️  [$(NAME)] Cleaned$(X)\n"
+	@printf "$(R)🗑️  [$(NAME)] Cleaned$(X)\n"
 	@rm -rf $(OBJDIR) $(OBJDIR_B)
 	@$(MAKE) --silent -C $(LIBFT_DIR) clean
 

@@ -12,10 +12,11 @@
 
 #include "../include/pipex.h"
 #include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-int	child_1(char **argv, int *pipe_fd, char **envp)
+int	child_start(char **argv, int *pipe_fd, char **envp)
 {
 	int	fd;
 
@@ -34,7 +35,19 @@ int	child_1(char **argv, int *pipe_fd, char **envp)
 	return (0);
 }
 
-int	child_2(char **argv, int *pipe_fd, char **envp)
+int	child_process(char **argv, int *pipe_fd, char **envp)
+{
+	if (pipe_fd[0] == -1 || pipe_fd[0] == -1)
+		perror("Pipe unavailable");
+	dup2(pipe_fd[0], 0);
+	close(pipe_fd[0]);
+	dup2(1, pipe_fd[1]);
+	close(pipe_fd[1]);
+	exec_cmd(argv[3], envp);
+	return (0);
+}
+
+int	child_end(char **argv, int *pipe_fd, char **envp)
 {
 	int	fd;
 
@@ -60,20 +73,20 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid2;
 	int		status;
 
-	if (argc != 5)
-		return (ft_printf("Please give at least 4 args "), 1);
+	if (argc < 5)
+		return (ft_printf("Please give at least 4 args\n"), 2);
 	if (pipe(pipe_fd) == -1)
 		exit(1);
 	pid1 = fork();
 	if (pid1 == -1)
 		exit(1);
 	if (!pid1)
-		child_1(argv, pipe_fd, envp);
+		child_start(argv, pipe_fd, envp);
 	pid2 = fork();
 	if (pid2 == -1)
 		exit(1);
 	if (!pid2)
-		child_2(argv, pipe_fd, envp);
+		child_end(argv, pipe_fd, envp);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	waitpid(pid1, &status, 0);
