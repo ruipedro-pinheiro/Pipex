@@ -123,9 +123,7 @@ int	main(int argc, char **argv, char **envp)
 		i = 3;
 		if (argc < 6)
 			exit(1);
-	}
-	else
-	{
+		// here_doc();
 	}
 	pipe_setup(argc, argv, envp);
 }
