@@ -61,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 
 	if (argc != 5)
-		return (ft_printf("Please give at least 4 args "), 1);
+		return (ft_printf("Please give at least 4 args\n"), 1);
 	if (pipe(pipe_fd) == -1)
 		error_handler("pipe");
 	pid1 = fork();

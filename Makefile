@@ -14,7 +14,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 SRCDIR_B = src_bonus
 OBJDIR_B = obj_bonus
-SRC_B = pipex.c utils.c
+SRC_B = pipex_bonus.c utils_bonus.c here_doc_bonus.c
 OBJ_B = $(addprefix $(OBJDIR_B)/, $(SRC_B:.c=.o))
 
 ################################################################################
@@ -46,13 +46,14 @@ all: $(LIBFT) $(NAME)
 	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
 	@printf " $(C)✅ [$(NAME)] $(B)Build complete$(X)\n"
 
-bonus: $(LIBFT) $(NAME)
-	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
-	@printf " $(C)✅ [$(NAME)] $(B)Bonus complete$(X)\n"
+
 
 $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) $(LIBFT) -o $(NAME)
 
+bonus: $(LIBFT) .bonus
+	@if [ $$(cat $(CNT)) -gt 0 ]; then printf "\n"; fi
+	@printf " $(C)✅ [$(NAME)] $(B)Bonus complete$(X)\n"
 .bonus: $(OBJ_B) $(LIBFT)
 	@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ_B) $(LIBFT) -o $(NAME)
 
