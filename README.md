@@ -52,4 +52,4 @@ make re     # Rebuild from scratch
 
 ### AI usage
 
-AI tools (Claude Code) were used to assist with debugging the pipe management logic, specifically for identifying a missing `exit()` call in command error handling and for structuring the multi-pipe bonus implementation. All code was reviewed and tested manually.
+AI tools (Claude Code) were used to assist with debugging the pipe management logic, specifically for identifying a missing `exit()` call in command error handling and for structuring the multi-pipe bonus implementation. All code was coded and tested manually.
