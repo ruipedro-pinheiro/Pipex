@@ -14,7 +14,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 SRCDIR_B = src_bonus
 OBJDIR_B = obj_bonus
-SRC_B = pipex_bonus.c utils_bonus.c here_doc_bonus.c
+SRC_B = pipex_bonus.c utils_bonus.c here_doc_bonus.c multi_pipe_bonus.c
 OBJ_B = $(addprefix $(OBJDIR_B)/, $(SRC_B:.c=.o))
 
 ################################################################################

@@ -20,15 +20,23 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-// pipe_fd is the original pipe, if needed more pipes will be added
-typedef struct t_pipex
+typedef struct s_pipex
 {
-	int		*pipe_fd;
-	char	**argv;
+	char	**cmds;
 	char	**envp;
+	char	*infile;
+	char	*outfile;
+	char	*limiter;
+	int		cmd_count;
+	pid_t	*pids;
 }			t_pipex;
 
 void		exec_cmd(char *cmd, char **envp);
 int			error_handler(char *msg);
+void		child_start(t_pipex *pipex, int *pipe_fd);
+void		child_process(t_pipex *pipex, int i, int prev_fd, int *pipe_fd);
+void		child_end(t_pipex *pipex, int prev_fd);
+int			here_doc_input(t_pipex *pipex);
+int			pipe_setup(t_pipex *pipex);
 
 #endif

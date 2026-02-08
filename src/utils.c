@@ -83,10 +83,13 @@ void	exec_cmd(char *cmd, char **envp)
 		ft_putstr_fd(s_cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		ft_strfree(s_cmd);
+		exit(127);
 	}
 	if (execve(path, s_cmd, envp) == -1)
 	{
-		error_handler(*s_cmd);
+		perror(s_cmd[0]);
+		free(path);
 		ft_strfree(s_cmd);
+		exit(126);
 	}
 }
