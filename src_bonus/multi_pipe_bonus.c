@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "../include/pipex_bonus.h"
 
 static int	init_pipes(t_pipex *pipex)
 {
@@ -75,8 +75,7 @@ int	pipe_setup(t_pipex *pipex)
 			exit(1);
 		if (pipex->pids[i] == 0)
 			run_child(pipex, i, prev_fd, pipe_fd);
-		prev_fd = parent_update(prev_fd, pipe_fd,
-				i == pipex->cmd_count - 1);
+		prev_fd = parent_update(prev_fd, pipe_fd, i == pipex->cmd_count - 1);
 	}
 	return (wait_children(pipex));
 }

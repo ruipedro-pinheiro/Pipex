@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "../include/pipex_bonus.h"
 
 static void	here_doc_read(t_pipex *pipex, int *pipe_fd)
 {
@@ -22,8 +22,7 @@ static void	here_doc_read(t_pipex *pipex, int *pipe_fd)
 	line = get_next_line(0);
 	while (line)
 	{
-		if (ft_strncmp(line, pipex->limiter, len) == 0
-			&& (line[len] == '\n' || line[len] == '\0'))
+		if (ft_strncmp(line, pipex->limiter, len) == 0 || line[len] == '\0')
 			break ;
 		write(pipe_fd[1], line, ft_strlen(line));
 		free(line);

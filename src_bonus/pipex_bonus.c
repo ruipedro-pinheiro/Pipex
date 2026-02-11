@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
-#include <stdlib.h>
+#include "../include/pipex_bonus.h"
 
 static void	init_pipex(t_pipex *pipex, int argc, char **argv, char **envp)
 {
