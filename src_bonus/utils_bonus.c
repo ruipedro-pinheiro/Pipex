@@ -75,14 +75,16 @@ void	exec_cmd(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
+	char	*error_msg;
 
 	s_cmd = ft_split(cmd, ' ');
 	path = get_path(s_cmd[0], envp);
 	if (!path)
 	{
-		ft_putstr_fd(s_cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		error_msg = ft_strjoin(*s_cmd, ": command not found\n");
+		ft_putstr_fd(error_msg, 2);
 		ft_strfree(s_cmd);
+		free(error_msg);
 		exit(127);
 	}
 	if (execve(path, s_cmd, envp) == -1)
