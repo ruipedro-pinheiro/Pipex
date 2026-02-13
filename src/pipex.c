@@ -22,6 +22,9 @@ int	child_1(char **argv, int *pipe_fd, char **envp)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		close(fd);
 		perror(argv[1]);
 		exit(1);
 	}
@@ -41,6 +44,9 @@ int	child_2(char **argv, int *pipe_fd, char **envp)
 	fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		close(fd);
 		perror(argv[4]);
 		exit(1);
 	}

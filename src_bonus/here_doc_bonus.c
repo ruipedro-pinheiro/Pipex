@@ -59,6 +59,9 @@ void	child_start(t_pipex *pipex, int *pipe_fd)
 	fd = open(pipex->infile, O_RDONLY);
 	if (fd == -1)
 	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		close(fd);
 		perror(pipex->infile);
 		exit(1);
 	}
@@ -91,6 +94,8 @@ void	child_end(t_pipex *pipex, int prev_fd)
 	fd = open(pipex->outfile, flags, 0644);
 	if (fd == -1)
 	{
+		close(prev_fd);
+		close(fd);
 		perror(pipex->outfile);
 		exit(1);
 	}
