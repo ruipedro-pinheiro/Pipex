@@ -71,22 +71,27 @@ char	*get_path(char *cmd, char **envp)
 	return (NULL);
 }
 
+static void	die_not_found(char *cmd, char **s_cmd)
+{
+	if (cmd)
+		ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	if (s_cmd)
+		ft_strfree(s_cmd);
+	exit(127);
+}
+
 void	exec_cmd(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
-	char	*error_msg;
 
 	s_cmd = ft_split(cmd, ' ');
+	if (!s_cmd || !s_cmd[0])
+		die_not_found(NULL, s_cmd);
 	path = get_path(s_cmd[0], envp);
 	if (!path)
-	{
-		error_msg = ft_strjoin(*s_cmd, ": command not found\n");
-		ft_putstr_fd(error_msg, 2);
-		ft_strfree(s_cmd);
-		free(error_msg);
-		exit(127);
-	}
+		die_not_found(s_cmd[0], s_cmd);
 	if (execve(path, s_cmd, envp) == -1)
 	{
 		perror(s_cmd[0]);
