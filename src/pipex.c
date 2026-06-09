@@ -24,7 +24,6 @@ int	child_1(char **argv, int *pipe_fd, char **envp)
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		close(fd);
 		perror(argv[1]);
 		exit(1);
 	}
@@ -46,7 +45,6 @@ int	child_2(char **argv, int *pipe_fd, char **envp)
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		close(fd);
 		perror(argv[4]);
 		exit(1);
 	}
@@ -67,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 
 	if (argc != 5)
-		return (ft_printf("Please give at least 4 args\n"), 1);
+		return (ft_printf("Error: expected 4 arguments\n"), 1);
 	if (pipe(pipe_fd) == -1)
 		error_handler("pipe");
 	pid1 = fork();
